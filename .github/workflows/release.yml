@@ -1,0 +1,259 @@
+name: Release FlyEnv
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+
+jobs:
+  build-windows:
+    name: Build Windows (x64)
+    runs-on: windows-2022
+    timeout-minutes: 60
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install build dependencies
+        run: choco install -y make
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+
+      - name: Setup Go
+        uses: actions/setup-go@v4
+        with:
+          go-version: 'stable'
+
+      - name: Cache node_modules
+        uses: actions/cache@v4
+        with:
+          path: |
+            node_modules
+            **/node_modules
+            .yarn/cache
+            ~/.cache/node-gyp
+            ~\AppData\Local\node-gyp
+          key: ${{ runner.os }}-x64-node-${{ hashFiles('**/package.json') }}
+
+      - name: Install dependencies
+        run: |
+          npm install -g yarn node-gyp
+          python -m pip install --upgrade pip
+          $env:LINK = "runtimeobject.lib"
+          yarn install
+
+      - name: Build Go helper
+        run: |
+          go install github.com/tc-hib/go-winres@latest
+          $GOBIN = $(go env GOPATH) + "\bin"
+          $env:PATH = "$GOBIN;$env:PATH"
+          cd "$env:GITHUB_WORKSPACE/src/helper-go"
+          go clean -modcache
+          go mod download
+          go mod tidy
+          go-winres make
+          .\build-win.ps1
+
+      - name: Build Electron packages
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: yarn build
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: windows-x64
+          path: |
+            release/*.exe
+            release/*.yml
+            release/*.blockmap
+
+  build-macos:
+    name: Build macOS (${{ matrix.arch }})
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 60
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - arch: x64
+            os: macos-15
+          - arch: arm64
+            os: macos-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+
+      - name: Setup Go
+        uses: actions/setup-go@v4
+        with:
+          go-version: 'stable'
+
+      - name: Cache node_modules
+        uses: actions/cache@v4
+        with:
+          path: |
+            node_modules
+            **/node_modules
+            .yarn/cache
+            ~/.cache/node-gyp
+          key: ${{ runner.os }}-${{ matrix.arch }}-node-${{ hashFiles('**/package.json') }}
+
+      - name: Install dependencies
+        run: |
+          npm install -g yarn node-gyp
+          yarn install
+
+      - name: Build Go helper
+        run: |
+          cd "$GITHUB_WORKSPACE/src/helper-go"
+          chmod +x ./build.sh
+          bash ./build.sh
+
+      - name: Build Electron App
+        env:
+          NODE_OPTIONS: "--max-old-space-size=4096"
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          CSC_IDENTITY_AUTO_DISCOVERY: false
+        run: yarn build
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: macos-${{ matrix.arch }}
+          path: |
+            release/*.dmg
+            release/*.zip
+            release/*.yml
+            release/*.blockmap
+
+  build-linux:
+    name: Build Linux (${{ matrix.arch }})
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 60
+    strategy:
+      matrix:
+        include:
+          - arch: x64
+            os: ubuntu-22.04
+          - arch: arm64
+            os: ubuntu-22.04-arm
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install build dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y g++ make python3 python3-pip pkg-config fakeroot rpm
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+
+      - name: Setup Go
+        uses: actions/setup-go@v4
+        with:
+          go-version: 'stable'
+
+      - name: Cache node_modules
+        uses: actions/cache@v4
+        with:
+          path: |
+            node_modules
+            **/node_modules
+            .yarn/cache
+            ~/.cache/node-gyp
+          key: ${{ runner.os }}-${{ matrix.arch }}-node-${{ hashFiles('**/package.json') }}
+
+      - name: Install dependencies
+        run: |
+          npm install -g yarn node-gyp
+          python3 -m pip install --upgrade pip
+          yarn install
+
+      - name: Build Go helper
+        run: |
+          cd "$GITHUB_WORKSPACE/src/helper-go"
+          chmod +x ./build-os.sh
+          bash ./build-os.sh
+
+      - name: Build Electron packages
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: yarn build
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: linux-${{ matrix.arch }}
+          path: |
+            release/*.deb
+            release/*.rpm
+            release/*.yml
+
+  release:
+    name: Create Release
+    needs: [build-windows, build-macos, build-linux]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Download all artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: release-artifacts
+
+      - name: Prepare release files
+        run: |
+          mkdir -p release-final
+          find release-artifacts -type f \( -name "*.exe" -o -name "*.dmg" -o -name "*.zip" -o -name "*.deb" -o -name "*.rpm" \) -exec cp {} release-final/ \;
+          ls -la release-final/
+
+      - name: Get version from tag
+        id: get_version
+        run: echo "VERSION=${GITHUB_REF#refs/tags/}" >> $GITHUB_OUTPUT
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v2
+        with:
+          name: FlyEnv ${{ steps.get_version.outputs.VERSION }}
+          body: |
+            ## FlyEnv ${{ steps.get_version.outputs.VERSION }}
+            
+            ### 下载链接
+            
+            | 平台 | 架构 | 文件 |
+            |------|------|------|
+            | **Windows** | x64 | `FlyEnv-Setup-${{ steps.get_version.outputs.VERSION }}.exe` |
+            | **macOS** | Intel (x64) | `FlyEnv-${{ steps.get_version.outputs.VERSION }}.dmg` |
+            | **macOS** | Apple Silicon (arm64) | `FlyEnv-${{ steps.get_version.outputs.VERSION }}-arm64.dmg` |
+            | **Linux** | x64 | `FlyEnv-${{ steps.get_version.outputs.VERSION }}-x64.deb` / `.rpm` |
+            | **Linux** | arm64 | `FlyEnv-${{ steps.get_version.outputs.VERSION }}-arm64.deb` / `.rpm` |
+            
+            ### 更新说明
+            
+            - 移除许可证限制，所有功能完全开放
+            - 更新作者信息
+            
+            ---
+            
+            **完整更新日志**: https://github.com/luckerr2007/FlyEnv/compare/${{ steps.get_version.outputs.VERSION }}...HEAD
+          files: release-final/*
+          draft: false
+          prerelease: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
