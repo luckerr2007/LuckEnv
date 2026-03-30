@@ -162,8 +162,7 @@ export class Base {
         'pure-ftpd': 'pure-ftpd',
         tomcat: 'org.apache.catalina.startup.Bootstrap',
         rabbitmq: 'rabbit',
-        elasticsearch: 'org.elasticsearch.server/org.elasticsearch.bootstrap.Elasticsearch',
-        ollama: 'ollama'
+        elasticsearch: 'org.elasticsearch.server/org.elasticsearch.bootstrap.Elasticsearch'
       }
       const serverName = dis?.[this.type]
       if (serverName) {

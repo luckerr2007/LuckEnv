@@ -1,14 +1,15 @@
-# FlyEnv - AI Agent Development Guide
+# LuckEnv - AI Agent Development Guide
 
 ## Project Overview
 
-**FlyEnv** is an All-In-One Full-Stack Environment Management Tool built with Electron and Vue 3. It provides a lightweight, modular development environment manager for Windows, macOS, and Linux, allowing developers to install and manage Apache, PHP, Node.js, Python, databases, and more—running natively without Docker.
+**LuckEnv** is an All-In-One Full-Stack Environment Management Tool built with Electron and Vue 3. It provides a lightweight, modular development environment manager for Windows, macOS, and Linux, allowing developers to install and manage Apache, PHP, Node.js, Python, databases, and more—running natively without Docker.
 
-- **Version**: 4.13.2
+- **Version**: 1.1.0
 - **Electron Version**: 35.7.5
 - **License**: MIT
-- **Author**: LuckErr
-- **Repository**: <https://github.com/xpf0000/FlyEnv>
+- **Author**: 云梦鱼
+- **Email**: <3225567838@qq.com>
+- **Repository**: <https://github.com/luckerr2007/LuckEnv>
 
 ## Technology Stack
 
@@ -34,7 +35,7 @@
 
 ## Project Architecture
 
-FlyEnv follows Electron's multi-process architecture with three main components:
+LuckEnv follows Electron's multi-process architecture with three main components:
 
 ### 1. Main Process (`/src/main`)
 
@@ -280,8 +281,8 @@ Contains various test files and utilities:
 
 ```bash
 # Clone and install
-git clone git@github.com:xpf0000/FlyEnv.git
-cd FlyEnv
+git clone git@github.com:luckerr2007/LuckEnv.git
+cd LuckEnv
 yarn install
 
 # Development
@@ -296,7 +297,7 @@ yarn build
 **macOS**:
 
 - May require `sudo xattr -dr "com.apple.quarantine"` for helper binaries
-- Uses `flyenv-helper` for privileged operations
+- Uses `luckenv-helper` for privileged operations
 
 **Windows**:
 
@@ -333,7 +334,7 @@ yarn build
 
 ```bash
 # Fix macOS helper permissions
-yarn fix-flyenv-helper
+yarn fix-luckenv-helper
 
 # Kill running Electron processes (Windows)
 npx tsx scripts/electron-process-kill.ts
@@ -350,7 +351,7 @@ yarn upgrade-interactive
 
 ## Resources
 
-- **Website**: <https://www.flyenv.com>
+- **Website**: <https://github.com/luckerr2007/LuckEnv>
 - **Documentation**: <https://deepwiki.com/xpf0000/FlyEnv>
 - **Discord**: <https://discord.gg/u5SuMGxjPE>
-- **Releases**: <https://github.com/xpf0000/FlyEnv/releases>
+- **Releases**: <https://github.com/luckerr2007/LuckEnv/releases>

@@ -45,7 +45,7 @@ export function getLanguage(locale?: string) {
   if (locale) {
     return locale
   }
-  return app?.getLocale()?.split('-')?.[0] ?? 'en'
+  return app?.getLocale()?.split('-')?.[0] ?? 'zh'
 }
 
 /**
@@ -54,36 +54,29 @@ export function getLanguage(locale?: string) {
  */
 export function getLocale(): string {
   const locale = app?.getLocale() ?? ''
-  // Treat null / undefined / empty / whitespace as missing
   if (locale.trim() === '') {
-    return 'en_US.UTF-8' // Safe default fallback
+    return 'zh_CN.UTF-8'
   }
 
   const localeMap: Record<string, string> = {
-    vi: 'vi_VN' // Vietnamese
+    zh: 'zh_CN'
   }
 
-  // Check if locale is in the map
   if (localeMap[locale]) {
     return `${localeMap[locale]}.UTF-8`
   }
 
-  // For locales already in format "xx_YY" or "xx-YY", convert hyphen to underscore
   const normalized = locale.split('-').join('_')
 
-  // If already has underscore (e.g., "en_US"), use it as is
   if (normalized.includes('_')) {
-    // Warn if not in our known locale map
     if (!Object.values(localeMap).includes(normalized)) {
       logger.warn(`Using unvalidated locale code: ${locale}`)
     }
     return `${normalized}.UTF-8`
   }
 
-  // For unknown short codes, use safe fallback to prevent invalid locale codes
-  // Log warning for debugging purposes
-  logger.warn(`Unknown locale code: ${locale}, falling back to en_US.UTF-8`)
-  return 'en_US.UTF-8'
+  logger.warn(`Unknown locale code: ${locale}, falling back to zh_CN.UTF-8`)
+  return 'zh_CN.UTF-8'
 }
 
 export const wait = (time = 2000) => {

@@ -25,41 +25,33 @@
           <ForceStart />
         </div>
         <div class="col">
-          <ShowAI />
+          <Tool />
         </div>
       </div>
       <div class="row-2">
-        <div class="col">
-          <Tool />
-        </div>
         <div class="col">
           <AutoUpdate />
         </div>
-      </div>
-      <div class="row-2">
         <div class="col">
           <AutoLanch />
-        </div>
-        <div class="col">
-          <AutoStartService />
         </div>
       </div>
       <div class="row-2">
         <div class="col">
           <AutoHide />
         </div>
+        <div class="col">
+          <AutoStartService />
+        </div>
+      </div>
+      <div class="row-2">
         <div v-if="!isWindows" class="col">
           <RestPassword />
         </div>
         <div v-else class="col">
           <TrayStyle />
         </div>
-      </div>
-      <div v-if="!isWindows" class="row-2">
-        <div class="col">
-          <TrayStyle />
-        </div>
-        <div class="col">
+        <div v-if="!isWindows" class="col">
           <FlyEnvHelperFix />
         </div>
       </div>
@@ -76,7 +68,6 @@
   import { AppStore } from '@/store/app'
   import { computed, watch } from 'vue'
   import ForceStart from './ForceStart/index.vue'
-  import ShowAI from './AI/index.vue'
   import MacPortsSrc from './MacPortsSrc/index.vue'
   import ThemeSet from './Theme/index.vue'
   import Tool from './Tool/index.vue'

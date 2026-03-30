@@ -160,7 +160,6 @@ export class ForkManager {
   ftpsrvFork?: ForkItem
   dnsFork?: ForkItem
   serviceFork?: ForkItem
-  ollamaChatFork?: ForkItem
 
   _on: Callback = () => {}
   constructor(file: string) {
@@ -194,13 +193,6 @@ export class ForkManager {
       }
       return this.serviceFork!.send(...args)
     }
-    const fn = param.shift()
-    if (module === 'ollama' && ['chat', 'stopOutput'].includes(fn)) {
-      if (!this.ollamaChatFork) {
-        this.ollamaChatFork = new ForkItem(this.file, true)
-      }
-      return this.ollamaChatFork!.send(...args)
-    }
     /**
      * Find a thread with no tasks
      * If not found, and the number of threads is less than the number of CPU cores, create a new thread that will automatically destroy itself 10 seconds after completing the task.
@@ -231,7 +223,6 @@ export class ForkManager {
 
   destroy() {
     this?.serviceFork?.destroy()
-    this?.ollamaChatFork?.destroy()
     this.forks.forEach((fork) => {
       fork.destroy()
     })

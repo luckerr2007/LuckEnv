@@ -32,8 +32,6 @@ class BaseManager {
   Erlang: any
   Ruby: any
   Elasticsearch: any
-  Ollama: any
-  Ai: any
   Minio: any
   Rust: any
   MeiliSearch: any
@@ -303,18 +301,6 @@ class BaseManager {
         this.Elasticsearch = res.default
       }
       doRun(this.Elasticsearch)
-    } else if (module === 'ollama') {
-      if (!this.Ollama) {
-        const res = await import('./module/Ollama')
-        this.Ollama = res.default
-      }
-      doRun(this.Ollama)
-    } else if (module === 'ai') {
-      if (!this.Ai) {
-        const res = await import('./module/Ai')
-        this.Ai = res.default
-      }
-      doRun(this.Ai)
     } else if (module === 'minio') {
       if (!this.Minio) {
         const res = await import('./module/Minio')

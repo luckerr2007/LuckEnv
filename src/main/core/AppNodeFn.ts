@@ -619,16 +619,10 @@ X-GNOME-Autostart-enabled=true`
         await writeFile(f, JSON.stringify(v, null, 2))
       }
     }
-    const indexJson =
-      currentLang === 'zh'
-        ? {
-            lang: 'zh',
-            label: '中文'
-          }
-        : {
-            lang: 'en',
-            label: 'English'
-          }
+    const indexJson = {
+      lang: 'zh',
+      label: '中文'
+    }
     const file = join(langDir, currentLang, `index.json`)
     await writeFile(file, JSON.stringify(indexJson, null, 2))
     this?.mainWindow?.webContents.send('command', command, key, true)

@@ -12,27 +12,6 @@ class App extends Base {
     super()
   }
 
-  feedback(info: any) {
-    return new ForkPromise(async (resolve, reject) => {
-      const data = {
-        ...info
-      }
-
-      axios({
-        url: 'https://api.one-env.com/api/app/feedback_app',
-        method: 'post',
-        data,
-        proxy: this.getAxiosProxy()
-      })
-        .then(() => {
-          resolve(true)
-        })
-        .catch((e) => {
-          reject(e)
-        })
-    })
-  }
-
   checkAppVersionUpdate() {
     return new ForkPromise(async (resolve, reject) => {
       let file = 'latest.yml'

@@ -1,11 +1,12 @@
 {
-  "name": "FlyEnv",
-  "version": "4.13.6",
+  "name": "LuckEnv",
+  "version": "1.1.0",
   "description": "All-In-One Full-Stack Environment Management Tool",
   "author": {
-    "name": "LuckErr"
+    "name": "云梦鱼",
+    "email": "3225567838@qq.com"
   },
-  "copyright": "Copyright © LuckErr",
+  "copyright": "Copyright © 云梦鱼",
   "scripts": {
     "clean:dev": "npx rimraf dist",
     "clean": "npx rimraf node_modules/node-pty/build",

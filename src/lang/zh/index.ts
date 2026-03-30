@@ -1,10 +1,8 @@
-import aiZH from './ai.json'
 import apacheZH from './apache.json'
 import appLogZH from './appLog.json'
 import asideZH from './aside.json'
 import baseZH from './base.json'
 import confZH from './conf.json'
-import feedbackZH from './feedback.json'
 import forkZH from './fork.json'
 import hostZH from './host.json'
 import mailpitZH from './mailpit.json'
@@ -12,9 +10,7 @@ import menuZH from './menu.json'
 import mysqlZH from './mysql.json'
 import nginxZH from './nginx.json'
 import nodejsZH from './nodejs.json'
-import ollamaZH from './ollama.json'
 import phpZH from './php.json'
-import promptZH from './prompt.json'
 import redisZH from './redis.json'
 import serviceZH from './service.json'
 import setupZH from './setup.json'
@@ -40,13 +36,11 @@ export default {
     minio,
     meilisearch,
     requestTimer,
-    ai: aiZH,
     apache: apacheZH,
     appLog: appLogZH,
     aside: asideZH,
     base: baseZH,
     conf: confZH,
-    feedback: feedbackZH,
     fork: forkZH,
     host: hostZH,
     mailpit: mailpitZH,
@@ -54,9 +48,7 @@ export default {
     mysql: mysqlZH,
     nginx: nginxZH,
     nodejs: nodejsZH,
-    ollama: ollamaZH,
     php: phpZH,
-    prompt: promptZH,
     redis: redisZH,
     service: serviceZH,
     setup: setupZH,

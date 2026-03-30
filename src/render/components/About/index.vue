@@ -2,7 +2,7 @@
   <el-card>
     <template #header>
       <div class="flex items-baseline gap-3">
-        <span class="text-2xl">FlyEnv</span>
+        <span class="text-2xl">LuckEnv</span>
         <span>Version {{ version }}</span>
         <el-button type="primary" size="small" @click.stop="checkUpdate">{{
           I18nT('update.checkForUpdates')
@@ -16,17 +16,17 @@
         </div>
         <div class="mt-5">
           <a target="_blank" href="javascript:" rel="noopener noreferrer" @click="toHome($event)">
-            FlyEnv - https://flyenv.com
+            LuckEnv - https://github.com/luckerr2007/LuckEnv
           </a>
         </div>
       </div>
       <template v-if="lang === 'zh'">
         <el-row style="padding: 0 20px; margin-top: 30px">
           <el-col>
-            感谢使用FlyEnv. 使用中的任何问题和建议. 都可以加入社群进行讨论. 也可以提交 GitHub Issues
+            感谢使用LuckEnv. 使用中的任何问题和建议. 都可以加入社群进行讨论. 也可以提交 GitHub Issues
           </el-col>
           <el-col style="margin-top: 12px">
-            如果FlyEnv有帮助到你. 为了项目更好的发展, 烦请star和赞助. 感谢
+            如果LuckEnv有帮助到你. 为了项目更好的发展, 烦请star. 感谢
           </el-col>
           <el-col style="margin-top: 12px">
             GitHub:
@@ -34,32 +34,24 @@
               target="_blank"
               href="javascript:"
               rel="noopener noreferrer"
-              @click="openUrl($event, 'https://github.com/xpf0000/FlyEnv')"
+              @click="openUrl($event, 'https://github.com/luckerr2007/LuckEnv')"
             >
-              https://github.com/xpf0000/FlyEnv
+              https://github.com/luckerr2007/LuckEnv
             </a>
           </el-col>
           <el-col style="margin-top: 12px">
-            赞助:
-            <a
-              target="_blank"
-              href="javascript:"
-              rel="noopener noreferrer"
-              @click="openUrl($event, 'https://flyenv.com/sponsor.html')"
-            >
-              https://flyenv.com/sponsor.html
-            </a>
+            作者: 云梦鱼 (3225567838@qq.com)
           </el-col>
         </el-row>
       </template>
       <template v-else>
         <el-row style="padding: 0 20px; margin-top: 30px">
           <el-col>
-            Thanks for using FlyEnv. If you have any questions or suggestions, you can join the
+            Thanks for using LuckEnv. If you have any questions or suggestions, you can join the
             community for discussion. You can also submit GitHub Issues
           </el-col>
           <el-col style="margin-top: 12px">
-            If FlyEnv is helpful to you, please star and sponsor for the project. Thanks
+            If LuckEnv is helpful to you, please star for the project. Thanks
           </el-col>
           <el-col style="margin-top: 12px">
             GitHub:
@@ -67,30 +59,16 @@
               target="_blank"
               href="javascript:"
               rel="noopener noreferrer"
-              @click="openUrl($event, 'https://github.com/xpf0000/FlyEnv')"
+              @click="openUrl($event, 'https://github.com/luckerr2007/LuckEnv')"
             >
-              https://github.com/xpf0000/FlyEnv
+              https://github.com/luckerr2007/LuckEnv
             </a>
           </el-col>
           <el-col style="margin-top: 12px">
-            Sponsor:
-            <a
-              target="_blank"
-              href="javascript:"
-              rel="noopener noreferrer"
-              @click="openUrl($event, 'https://flyenv.com/sponsor.html')"
-            >
-              https://flyenv.com/sponsor.html
-            </a>
+            Author: 云梦鱼 (3225567838@qq.com)
           </el-col>
         </el-row>
       </template>
-      <div style="margin: 20px 20px 0">
-        <span style="margin-right: 12px">{{ $t('feedback.anythingToSay') }}</span>
-        <el-button type="primary" @click.stop="toFeedback">{{
-          $t('feedback.sendMessage')
-        }}</el-button>
-      </div>
     </div>
   </el-card>
 </template>
@@ -98,7 +76,6 @@
 <script setup lang="ts">
   import { ref, computed, onMounted, onUnmounted } from 'vue'
   import { AppStore } from '@/store/app'
-  import { AsyncComponentShow } from '@/util/AsyncComponent'
   import { app, shell } from '@/util/NodeFn'
   import IPC from '@/util/IPC'
   import { I18nT } from '@lang/index'
@@ -115,18 +92,13 @@
 
   const toHome = (e: Event) => {
     e.preventDefault()
-    shell.openExternal('https://flyenv.com')
+    shell.openExternal('https://github.com/luckerr2007/LuckEnv')
   }
 
   const checkUpdate = () => {
     appStore.checkUpdate(false)
   }
 
-  const toFeedback = () => {
-    import('@/components/Feedback/index.vue').then((res) => {
-      AsyncComponentShow(res.default).then()
-    })
-  }
   let times = 0
   let timer: any
   const onIconClick = () => {
