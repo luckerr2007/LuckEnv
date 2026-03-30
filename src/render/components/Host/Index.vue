@@ -366,6 +366,7 @@
       import('./Tomcat/Edit.vue').then((res) => {
         AsyncComponentShow(res.default).then()
       })
+    }
   }
   const openCreateProject = () => {
     import('./CreateProject/new.vue').then((res) => {
