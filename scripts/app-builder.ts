@@ -55,7 +55,7 @@ Promise.all([packMain(), packRenderer()])
       options.config = config as any
     } else if (isLinux()) {
       console.log('electron-builder isLinux !!!')
-      const config = (await import('../configs/electron-builder.linux')).default
+      const config = (await import('../configs/electron-builder')).default
       options.config = config as any
     }
 
