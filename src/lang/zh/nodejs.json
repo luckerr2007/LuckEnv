@@ -3,7 +3,7 @@
   "installNVM": "安装<a href=\"javascript:void();\" onclick=\"openUrl('https://github.com/nvm-sh/nvm')\">nvm</a>",
   "Terminal": "终端",
   "registry": "registry",
-  "checkPackageJsonUpdate": "检查更�?,
+  "checkPackageJsonUpdate": "检查更新",
   "updatePackageJsonFile": "更新package.json文件",
   "updatePackageJsonFileTips": "此操作会改变package.json文件, 确定更新?",
   "copyDirPath": "拷贝路径",
