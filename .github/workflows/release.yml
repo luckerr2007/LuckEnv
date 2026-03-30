@@ -20,6 +20,12 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Sync package version from tag
+        env:
+          VERSION_TAG: ${{ github.ref_name }}
+        run: |
+          node -e "const fs=require('fs');const p='package.json';const t=(process.env.VERSION_TAG||'').replace(/^v/,'');const j=JSON.parse(fs.readFileSync(p,'utf8'));j.version=t;fs.writeFileSync(p,JSON.stringify(j,null,2)+'\n');console.log('package version =>',j.version)"
+
       - name: Install build dependencies
         run: choco install -y make
 
@@ -111,6 +117,12 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+
+      - name: Sync package version from tag
+        env:
+          VERSION_TAG: ${{ github.ref_name }}
+        run: |
+          node -e "const fs=require('fs');const p='package.json';const t=(process.env.VERSION_TAG||'').replace(/^v/,'');const j=JSON.parse(fs.readFileSync(p,'utf8'));j.version=t;fs.writeFileSync(p,JSON.stringify(j,null,2)+'\n');console.log('package version =>',j.version)"
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
