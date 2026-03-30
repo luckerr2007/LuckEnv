@@ -40,7 +40,7 @@
           <div class="flex items-center gap-2">
             <span>{{ I18nT('tools.ImageCompress.batchProcessing.imageFiles') }}</span>
             <el-button
-              :icon="Play"
+              :icon="VideoPlay"
               type="primary"
               link
               @click.stop="ImageBatch.doProcess()"
@@ -143,7 +143,7 @@
 <script setup lang="ts">
   import { ref, computed, onMounted } from 'vue'
   import { ImageBatch } from './setup'
-  import { Delete, FolderOpened, Plus, Picture, Folder, Play } from '@element-plus/icons-vue'
+  import { Delete, FolderOpened, Plus, Picture, Folder, VideoPlay } from '@element-plus/icons-vue'
   import BatchImageTablePathCell from '@/components/Tools/ImageCompress/BatchImageTablePathCell.vue'
   import { I18nT } from '@lang/index'
   import { initFileDroper } from '@/util/File'
